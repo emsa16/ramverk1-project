@@ -1,7 +1,13 @@
 {
-    "name" : "anax/noname",
-    "description": "Anax scaffolding website for development",
+    "name" : "emsa/forum",
+    "description": "Reddit-like site, final project for course ramverk1",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Emil Sandberg",
+            "email": "emil.hietanen@gmail.com"
+        }
+    ],
     "require": {
         "anax/common": "^1.0",
         "anax/configure": "^1.0",
@@ -17,6 +23,6 @@
         "symfony/yaml": "^3.3"
     },
     "autoload": {
-        "psr-4": {"Anax\\": "src/"}
+        "psr-4": {"Emsa\\": "src/"}
     }
 }

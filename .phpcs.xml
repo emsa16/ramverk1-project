@@ -4,6 +4,7 @@
 
     <file>src</file>
     <file>test</file>
+    <file>config</file>
 
     <exclude-pattern>*.tpl.*</exclude-pattern>
     <exclude-pattern>test/config.php</exclude-pattern>
@@ -13,7 +14,7 @@
     <arg name="show_warnings" value="1"/>
     <arg name="colors" value="1"/>
     <arg name="tab_width" value="4"/>
-    
+
 -->
     <!--<arg name="extensions" value=".php"/>-->
     <!--<arg name="warning-severity" value="5"/>-->

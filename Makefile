@@ -23,7 +23,7 @@ ERROR_COLOR	= \033[31;01m
 WARN_COLOR	= \033[33;01m
 
 # Which makefile am I in?
-WHERE-AM-I = $(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+WHERE-AM-I = "$(CURDIR)/$(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))"
 THIS_MAKEFILE := $(call WHERE-AM-I)
 
 # Echo some nice helptext based on the target comment
@@ -349,3 +349,11 @@ cimage-config-create:
 	@$(call HELPTEXT,$@)
 	$(ECHO) "$$CIMAGE_CONFIG" | bash -c 'cat > htdocs/cimage/img_config.php'
 	cat htdocs/cimage/img_config.php
+
+
+
+# target: install-module              - Executes setup procedure for module.
+.PHONY:  install-module
+install-module:
+	@$(call HELPTEXT,$@)
+	vendor/$(module)/script/install-module

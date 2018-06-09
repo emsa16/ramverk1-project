@@ -1,7 +1,7 @@
 ---
-title: "My title"
+title: "Welcome"
 ...
-Home
+Welcome
 =========================
 
-This is the homepage.
+Welcome to our community, where we talk everything and anything about Seinfeld.
