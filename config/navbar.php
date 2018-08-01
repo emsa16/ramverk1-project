@@ -16,6 +16,10 @@ return [
             "text" => "About",
             "route" => "about",
         ],
+        "posts" => [
+            "text" => "Posts",
+            "route" => "post",
+        ],
         "login" => [
             "text" => "Log in",
             "route" => "login",

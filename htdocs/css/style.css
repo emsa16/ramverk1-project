@@ -92,7 +92,8 @@ pre {
     /*background-color: green;*/
 }
 
-.entry {
+.entry,
+.post {
     padding: 10px 0;
 }
 
