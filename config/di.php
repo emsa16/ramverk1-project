@@ -125,5 +125,39 @@ return [
                 return $obj;
             }
         ],
+        "db" => [
+            "shared" => true,
+            "callback" => function () {
+                $obj = new \Anax\Database\DatabaseQueryBuilder();
+                $obj->configure("database.php");
+                return $obj;
+            }
+        ],
+        'manager' => [
+            'shared' => true,
+            'callback' => function () {
+                $obj = new \LRC\Repository\RepositoryManager();
+                return $obj;
+            }
+        ],
+        "userController" => [
+            "shared" => true,
+            "callback" => function () {
+                $obj = new \Emsa\User\UserController();
+                $obj->setDI($this);
+                $obj->init();
+                return $obj;
+            }
+        ],
+        "userAdminController" => [
+            "shared" => true,
+            "callback" => function () {
+                $obj = new \Emsa\User\UserAdminController();
+                $obj->setDI($this);
+                $obj->init();
+                return $obj;
+            }
+        ],
+
     ],
 ];

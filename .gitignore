@@ -4,3 +4,7 @@
 memory::
 composer.lock
 .DS_Store
+sql/ddl/comment_mysql.sql
+sql/ddl/user_mysql.sql
+sql/ddl/post_mysql.sql
+config/database.php

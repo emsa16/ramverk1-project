@@ -14,15 +14,21 @@
         "anax/page": "^1.0",
         "anax/response": "^1.0",
         "anax/request": "^1.0",
-        "anax/router": "^1.0",
+        "anax/router": "1.0.*",
         "anax/session": "^1.0",
         "anax/textfilter": "^1.0",
         "anax/url": "^1.0",
         "anax/view": "^1.0",
         "mos/cimage": "^0.7.20",
-        "symfony/yaml": "^3.3"
+        "symfony/yaml": "^3.3",
+        "anax/database": "^1.1",
+        "lrc-se/anax-repository": "^1.1"
     },
     "autoload": {
-        "psr-4": {"Emsa\\": "src/"}
+        "psr-4": {
+            "Anax\\": "src/",
+            "Emsa\\": "src/",
+            "LRC\\": "src/"
+        }
     }
 }
