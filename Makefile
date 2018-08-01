@@ -349,11 +349,3 @@ cimage-config-create:
 	@$(call HELPTEXT,$@)
 	$(ECHO) "$$CIMAGE_CONFIG" | bash -c 'cat > htdocs/cimage/img_config.php'
 	cat htdocs/cimage/img_config.php
-
-
-
-# target: install-module              - Executes setup procedure for module.
-.PHONY:  install-module
-install-module:
-	@$(call HELPTEXT,$@)
-	vendor/$(module)/script/install-module
