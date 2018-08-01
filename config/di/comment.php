@@ -9,10 +9,10 @@ return [
         "commentController" => [
             "shared" => true,
             "callback" => function () {
-                $comment = new \Emsa\Comment\CommentController();
-                $comment->setDI($this);
-                $comment->init();
-                return $comment;
+                $obj = new \Emsa\Comment\CommentController();
+                $obj->setDI($this);
+                $obj->init();
+                return $obj;
             }
         ],
     ],

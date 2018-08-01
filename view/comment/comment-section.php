@@ -17,6 +17,7 @@ if (isset($editForm)) {
     <?php endif; ?>
 
     <h3>Comments:</h3>
+    <p><?= $commentCount ?> comments</p>
     <p>Sort by <a href="<?= $this->url("post/$postid?sort=best") ?>">best</a> |
                   <a href="<?= $this->url("post/$postid?sort=old") ?>">oldest</a> |
                   <a href="<?= $this->url("post/$postid?sort=new") ?>">newest</a></p>

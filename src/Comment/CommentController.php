@@ -63,6 +63,7 @@ class CommentController implements InjectionAwareInterface
 
         $viewData = [
             "comments" => $this->buildCommentTree($comments, $sortBy),
+            "commentCount" => count($comments),
             "textfilter" => $this->di->textfilter,
             "postid" => $postid,
             "action" => "",
@@ -109,6 +110,7 @@ class CommentController implements InjectionAwareInterface
 
         $viewData = [
             "comments" => $this->buildCommentTree($comments, $sortBy),
+            "commentCount" => count($comments),
             "textfilter" => $this->di->textfilter,
             "postid" => $postid,
             "action" => "reply",
@@ -158,6 +160,7 @@ class CommentController implements InjectionAwareInterface
 
         $viewData = [
             "comments" => $this->buildCommentTree($comments, $sortBy),
+            "commentCount" => count($comments),
             "textfilter" => $this->di->textfilter,
             "postid" => $postid,
             "action" => "edit",
@@ -201,6 +204,7 @@ class CommentController implements InjectionAwareInterface
 
         $viewData = [
             "comments" => $this->buildCommentTree($comments, $sortBy),
+            "commentCount" => count($comments),
             "textfilter" => $this->di->textfilter,
             "postid" => $postid,
             "action" => "delete",
