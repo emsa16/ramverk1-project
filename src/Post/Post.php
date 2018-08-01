@@ -23,8 +23,6 @@ class Post extends BaseModel implements SoftManagedModelInterface
     // public $edited;
     public $title;
     public $content;
-    // public $upvote;
-    // public $downvote;
     // public $deleted;
 
 

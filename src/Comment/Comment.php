@@ -25,8 +25,6 @@ class Comment extends BaseModel implements SoftManagedModelInterface
     // public $created;
     // public $edited;
     public $content;
-    // public $upvote;
-    // public $downvote;
     // public $deleted;
 
 

@@ -154,3 +154,7 @@ label.has-error {
 .delete, .delete a {
     color: red;
 }
+
+.voted {
+    color: blue;
+}

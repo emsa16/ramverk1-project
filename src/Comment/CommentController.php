@@ -33,6 +33,14 @@ class CommentController implements InjectionAwareInterface
             'table' => 'rv1proj_Comment'
         ]);
         $this->comments = $commentRepository;
+
+        $voteRepository = $this->di->manager->createRepository(Vote::class, [
+            'db' => $this->di->db,
+            'type' => 'db',
+            'table' => 'rv1proj_Comment_votes'
+        ]);
+        $this->votes = $voteRepository;
+
         return $commentRepository;
     }
 
@@ -221,7 +229,8 @@ class CommentController implements InjectionAwareInterface
 
     public function voteComment($postid)
     {
-        if (is_null($this->di->userController->getLoggedInUserId())) {
+        $loggedInUser = $this->di->userController->getLoggedInUserId();
+        if (is_null($loggedInUser)) {
             $this->di->response->redirect("post/$postid");
         }
 
@@ -231,12 +240,38 @@ class CommentController implements InjectionAwareInterface
             $this->di->response->redirect("post/$postid");
         }
 
+        $vote_value = "";
         if ($this->di->request->getPost("upvote")) {
-            $currentComment->upvote += 1;
+            $vote_value = 1;
         } elseif ($this->di->request->getPost("downvote")) {
-            $currentComment->downvote += 1;
+            $vote_value = 0;
         }
-        $this->comments->save($currentComment);
+
+        $result = $this->votes->getAll('comment_id = ? AND user_id = ?', [$currentComment->id, $loggedInUser]);
+        if (count($result) > 0) {
+            if (count($result) > 1) {
+                //There SHOULD never be more than one vote per user-comment pair, but just in case...
+                $temp_result = array(array_pop($result));
+                foreach ($result as $vote) {
+                    $this->votes->delete($vote);
+                }
+                $result = $temp_result;
+            }
+            $vote = $result[0];
+            if ($vote->vote_value == $vote_value) {
+                $this->votes->delete($vote);
+            } else {
+                $vote->vote_value = $vote_value;
+                $this->votes->save($vote);
+            }
+        } else {
+            $vote = new Vote();
+            $vote->vote_value = $vote_value;
+            $vote->user_id = $loggedInUser;
+            $vote->comment_id = $currentComment->id;
+            $this->votes->save($vote);
+        }
+
         $this->di->response->redirect("post/$postid#{$currentComment->id}");
     }
 
@@ -247,6 +282,14 @@ class CommentController implements InjectionAwareInterface
         $comments = $this->comments->getAll('post_id = ?', [$postid]);
 
         foreach ($comments as $comment) {
+            $comment->upvote = $this->votes->count('comment_id = ? AND vote_value = ?', [$comment->id, 1]);
+            $comment->downvote = $this->votes->count('comment_id = ? AND vote_value = ?', [$comment->id, 0]);
+
+            $vote = $this->votes->getFirst('comment_id = ? AND user_id = ?', [$comment->id, $loggedInUser]);
+            if ($vote) {
+                $comment->userVote = $vote->vote_value;
+            }
+
             $comment->isUserOwner = ($loggedInUser == $comment->userObject->id);
             $comment->isUserAdmin = $this->di->session->has("admin");
         }
