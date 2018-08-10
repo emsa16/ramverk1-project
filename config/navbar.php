@@ -20,6 +20,10 @@ return [
             "text" => "Posts",
             "route" => "post",
         ],
+        "profiles" => [
+            "text" => "Users",
+            "route" => "profiles",
+        ],
         "login" => [
             "text" => "Log in",
             "route" => "login",

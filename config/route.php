@@ -38,7 +38,7 @@ return [
             "file" => __DIR__ . "/route/user.php",
         ],
         [
-            // User routes
+            // Admin routes
             "mount" => "admin",
             "file" => __DIR__ . "/route/admin.php",
         ],

@@ -19,10 +19,22 @@ $content = $textfilter->parse($post->content, ["htmlentities", "markdown"])->tex
         <div class='text'><?= $content ?></div>
     <?php endif; ?>
 
-    <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
+    <?php
+    $gravatarImg = "<img src='http://www.gravatar.com/avatar/$gravatarString.jpg?d=identicon&s=40'>";
+
+    if (!$post->userObject->deleted) {
+        $userUrl = $this->url("profile") . "/" .  $post->userObject->username;
+        $username = "<a href='$userUrl'>" . $post->userObject->username . "</a>";
+        $gravatarImg = "<a href='$userUrl'>$gravatarImg</a>";
+    } else {
+        $username = "[deleted]";
+    }
+
+    echo $gravatarImg;
+    ?>
 
     <div class='stats'>
-        <?= $points ?> points, created by <?= !$post->userObject->deleted ? $post->userObject->username : '[deleted]' ?>, added <?= $created . $edited ?>
+        <?= $points ?> points, created by <?= $username ?>, added <?= $created . $edited ?>
     </div>
 
     <?php if (!($post->deleted && strtotime($post->deleted) < time()) && ($post->isUserOwner || $post->isUserAdmin)) : ?>

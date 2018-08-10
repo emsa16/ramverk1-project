@@ -18,6 +18,13 @@
             continue;
         }
         $points = ( (int)$post->upvote - (int)$post->downvote );
+
+        if (!$post->userObject->deleted) {
+            $username = "<a href='" . $this->url("profile") . "/" .  $post->userObject->username . "'>" . $post->userObject->username . "</a>";
+        } else {
+            $username = "[deleted]";
+        }
+
         $created = $post->timeElapsedString($post->created);
         $title = $textfilter->parse($post->title, ["htmlentities", "markdown"])->text;
         ?>
@@ -30,7 +37,7 @@
             </div></a>
 
             <div class='stats'>
-                <?= $post->commentCount ?> comments, <?= $points ?> points, created by <?= !$post->userObject->deleted ? $post->userObject->username : '[deleted]' ?>, added <?= $created ?>
+                <?= $post->commentCount ?> comments, <?= $points ?> points, created by <?= $username ?>, added <?= $created ?>
             </div>
 
             <?php if ($post->isUserOwner || $post->isUserAdmin) : ?>

@@ -14,10 +14,22 @@
 
         <?= $this->renderView("comment/vote-buttons", ["comment" => $comment]) ?>
 
-        <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
+        <?php
+        $gravatarImg = "<img src='http://www.gravatar.com/avatar/$gravatarString.jpg?d=identicon&s=40'>";
+
+        if (!$comment->userObject->deleted) {
+            $userUrl = $this->url("profile") . "/" .  $comment->userObject->username;
+            $username = "<a href='$userUrl'>" . $comment->userObject->username . "</a>";
+            $gravatarImg = "<a href='$userUrl'>$gravatarImg</a>";
+        } else {
+            $username = "[deleted]";
+        }
+
+        echo $gravatarImg;
+        ?>
 
         <div class='stats'>
-            <?= $points ?> points | by <?= !$comment->userObject->deleted ? $comment->userObject->username : '[deleted]' ?> | added <?= $created . $edited ?>
+            <?= $points ?> points | by <?= $username ?> | added <?= $created . $edited ?>
         </div>
 
         <?php if ($action == "edit" && $actionID == $comment->id) : ?>
