@@ -66,3 +66,42 @@ INSERT INTO rv1proj_Post_votes(user_id, post_id, vote_value) VALUES
     (6, 2, 0),
     (4, 2, 0)
 ;
+
+
+
+--
+-- Table Tag
+--
+DROP TABLE IF EXISTS rv1proj_Tag;
+CREATE TABLE rv1proj_Tag (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `title` VARCHAR(80) NOT NULL
+) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO rv1proj_Tag(title) VALUES
+    ("debate"),
+    ("parody"),
+    ("fantheory"),
+    ("news"),
+    ("announcements")
+;
+
+
+
+--
+-- Table Posts_tags
+--
+DROP TABLE IF EXISTS rv1proj_Posts_tags;
+CREATE TABLE rv1proj_Posts_tags (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `tag_id` INTEGER DEFAULT NULL,
+    `post_id` INTEGER DEFAULT NULL,
+
+    FOREIGN KEY (`tag_id`) REFERENCES `rv1proj_Tag` (`id`) ON DELETE SET NULL,
+    FOREIGN KEY (`post_id`) REFERENCES `rv1proj_Post` (`id`) ON DELETE SET NULL
+) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO rv1proj_Posts_tags(tag_id, post_id) VALUES
+    (3, 3),
+    (1, 1)
+;

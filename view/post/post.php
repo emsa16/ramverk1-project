@@ -5,10 +5,23 @@ $points = ( (int)$post->upvote - (int)$post->downvote );
 $created = $post->timeElapsedString($post->created);
 $edited = $post->edited ? ", edited " . $post->timeElapsedString($post->edited) : "";
 $title = $textfilter->parse($post->title, ["htmlentities", "markdown"])->text;
+$tags = "";
+if (!empty($post->tags)) {
+    foreach ($post->tags as $tag) {
+        $tag_url = $this->url("tags/" . $textfilter->parse($tag->title, ["htmlentities"])->text);
+        $tags .= "<a href='$tag_url'>#" . $textfilter->parse($tag->title, ["htmlentities"])->text . "</a> ";
+    }
+}
 $content = $textfilter->parse($post->content, ["htmlentities", "markdown"])->text;
 ?>
 <div class='entry'>
-    <h2><?= $title ?></h2>
+    <table class='title'>
+        <tr>
+            <td><h2><?= $title ?></h2></a></td>
+            <td><span class='tags'><?= $tags ?></span></td>
+        </tr>
+    </table>
+
     <?= $this->renderView("post/vote-buttons", ["post" => $post, "view" => 'post-page']) ?>
 
     <?php if ($action == "edit") : ?>

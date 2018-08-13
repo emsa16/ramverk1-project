@@ -120,6 +120,7 @@ class PostController implements InjectionAwareInterface
             $createForm->validate();
             if ($createForm->isValid()) {
                 $this->posts->save($post);
+                $this->di->tagController->saveTags($post, $createForm->getExtra('tag_string'));
                 $this->di->response->redirect("post/{$post->id}");
             }
         }
@@ -147,36 +148,47 @@ class PostController implements InjectionAwareInterface
             $this->di->response->redirect("post");
         }
 
+        if (!property_exists($currentPost, 'tag_string')) {
+            $currentPost->tag_string = array_reduce($currentPost->tags, function($tag_string, $tag) {
+                if (!is_null($tag_string)) {
+                    return $tag_string . ", " . $tag->title;
+                }
+                return $tag->title;
+            });
+        }
+
         $editForm = new ModelForm('edit-post-form', $currentPost);
 
         if ($this->di->request->getMethod() == 'POST') {
             $post = $editForm->populateModel(null, ['id']);
-            // //Prevent edited column from being set to NULL
-            // unset($post->edited);
-            // unset($post->isUserOwner);
-            // unset($post->isUserAdmin);
             $editForm->validate();
             if ($editForm->isValid()) {
-                //Prevent edited column from being set to NULL
+                $this->di->tagController->saveTags($post);
+                //Prevent edited column from being set to NULL TEMP flyttat från innan validate()
                 unset($post->edited);
                 unset($post->isUserOwner);
                 unset($post->isUserAdmin);
+                unset($post->upvote);
+                unset($post->downvote);
+                unset($post->userVote);
+                unset($post->tags);
+                unset($post->tag_string);
                 $this->posts->save($post);
                 $this->di->response->redirect("post/$postid");
             }
         }
 
-        $currentPost = $this->getPost($postid, $loggedInUser);
+        $oldPost = $this->getPost($postid, $loggedInUser);
 
         $viewData = [
-            "post" => $currentPost,
+            "post" => $oldPost,
             "textfilter" => $this->di->textfilter,
             "action" => "edit",
             "form" => $editForm,
         ];
         $this->di->view->add("post/post", $viewData, "main", 1);
 
-        $this->di->pageRender->renderPage(["title" => "Edit post: " . $currentPost->title]);
+        $this->di->pageRender->renderPage(["title" => "Edit post: " . $oldPost->title]);
     }
 
 
@@ -197,8 +209,13 @@ class PostController implements InjectionAwareInterface
 
         if ($this->di->request->getMethod() == 'POST') {
             if ($this->di->request->getPost('delete') == 'Yes') {
+                unset($currentPost->edited);
                 unset($currentPost->isUserOwner);
                 unset($currentPost->isUserAdmin);
+                unset($currentPost->upvote);
+                unset($currentPost->downvote);
+                unset($currentPost->userVote);
+                unset($currentPost->tags);
                 $this->posts->deleteSoft($currentPost);
                 $this->di->response->redirect("post");
             } else {
@@ -296,6 +313,7 @@ class PostController implements InjectionAwareInterface
         if ($post) {
             $post = $this->getVoteStats($post, $loggedInUser);
             $post = $this->checkPosterPrivileges($post, $loggedInUser);
+            $post->tags = $this->di->tagController->getTags($post);
         }
         return $post;
     }
@@ -308,6 +326,7 @@ class PostController implements InjectionAwareInterface
         foreach ($posts as $key => $post) {
             $post = $this->getVoteStats($post, $loggedInUser);
             $post = $this->checkPosterPrivileges($post, $loggedInUser);
+            $post->tags = $this->di->tagController->getTags($post);
             $posts[$key] = $post;
         }
         return $posts;
