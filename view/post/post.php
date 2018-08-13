@@ -37,7 +37,7 @@ $content = $textfilter->parse($post->content, ["htmlentities", "markdown"])->tex
 
     if (!$post->userObject->deleted) {
         $userUrl = $this->url("profile") . "/" .  $post->userObject->username;
-        $username = "<a href='$userUrl'>" . $post->userObject->username . "</a>";
+        $username = "<a href='$userUrl'>" . $post->userObject->username . "</a> (" . $post->user_rank . ")";
         $gravatarImg = "<a href='$userUrl'>$gravatarImg</a>";
     } else {
         $username = "[deleted]";

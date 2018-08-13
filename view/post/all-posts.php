@@ -20,7 +20,7 @@
         $points = ( (int)$post->upvote - (int)$post->downvote );
 
         if (!$post->userObject->deleted) {
-            $username = "<a href='" . $this->url("profile") . "/" .  $post->userObject->username . "'>" . $post->userObject->username . "</a>";
+            $username = "<a href='" . $this->url("profile") . "/" .  $post->userObject->username . "'>" . $post->userObject->username . "</a> (" . $post->user_rank . ")";
         } else {
             $username = "[deleted]";
         }

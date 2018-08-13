@@ -6,12 +6,16 @@ $profileUrl = $this->url("profile");
 foreach ($users as $user) {
     $gravatarString = md5(strtolower(trim($user->email)));
     ?>
-    <p>
-        <a href="<?= $profileUrl . "/" .  $user->username ?>">
-            <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
-            <span><?= $user->username ?><span>
-        </a>
-    </p>
-
+    <table>
+        <tr>
+            <td>
+                <a href="<?= $profileUrl . "/" .  $user->username ?>">
+                    <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
+                    <span><?= $user->username ?></span>
+                </a>
+            </td>
+            <td class="ranking">(rank: <?= $user->rank ?>)</td>
+        </tr>
+    </table>
 <?php
 }

@@ -2,6 +2,9 @@
 
 <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
 
+<h3>Ranking</h3>
+<p><?= $rank ?> points</p>
+
 
 <h3>Posts</h3>
 <?php foreach ($userPosts as $post) {

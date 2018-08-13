@@ -323,4 +323,42 @@ class UserController implements InjectionAwareInterface
     {
         return $this->users->findSoft($key, $value);
     }
+
+
+
+    /**
+     * calculates the rank of given user.
+     *
+     * Rank is decided by the following, in order of importance:
+     * 1. received badges
+     * 2. points from user posts and comments that have received votes
+     * 3. number of user posts and comments
+     *
+     * @return integer $rank
+     */
+    public function calculateUserRank($user_id)
+    {
+        $rank = 0;
+
+        $badged_comments = $this->di->commentController->getUserReceivedBadges($user_id);
+        foreach ($badged_comments as $comment) {
+            $rank += $comment->stars * 25;
+        }
+
+        $posts = $this->di->postController->getUserPosts($user_id);
+        foreach ($posts as $post) {
+            $points = $this->di->postController->getPoints($post->id);
+            $rank += $points * 5;
+        }
+
+        $comments = $this->di->commentController->getUserComments($user_id);
+        foreach ($comments as $comment) {
+            $points = $this->di->commentController->getPoints($comment->id);
+            $rank += $points * 5;
+        }
+
+        $rank += count($posts) + count($comments);
+
+        return $rank;
+    }
 }

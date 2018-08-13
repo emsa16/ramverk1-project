@@ -19,7 +19,7 @@
 
         if (!$comment->userObject->deleted) {
             $userUrl = $this->url("profile") . "/" .  $comment->userObject->username;
-            $username = "<a href='$userUrl'>" . $comment->userObject->username . "</a>";
+            $username = "<a href='$userUrl'>" . $comment->userObject->username . "</a> (" . $comment->user_rank . ")";
             $gravatarImg = "<a href='$userUrl'>$gravatarImg</a>";
         } else {
             $username = "[deleted]";

@@ -19,22 +19,27 @@ class ProfileController implements InjectionAwareInterface
         $title = "All users";
 
         $users = $this->di->userController->getAll();
+        foreach ($users as $user) {
+            $user->rank = $this->di->userController->calculateUserRank($user->id);
+        }
 
         $sortBy = $this->sortBy();
         $sortArray = array();
         foreach ($users as $key => $user) {
             switch ($sortBy) {
                 case 'rank':
-                    $sortArray[$key] = "rank"; //TEMP ÄNDRA!!
+                    $sortArray[$key] = $user->rank;
+                    $sort_order = SORT_DESC;
                     break;
                 case 'name':
                     //Intentional fall through
                 default:
                     $sortArray[$key] = $user->username;
+                    $sort_order = SORT_ASC;
                     break;
             }
         }
-        array_multisort($sortArray, SORT_ASC, $users);
+        array_multisort($sortArray, $sort_order, $users);
 
         $data = [
             'users' => $users,
@@ -64,6 +69,7 @@ class ProfileController implements InjectionAwareInterface
         $comment_votes = $this->di->commentController->getUserVotes($user->id);
         $given_badges = $this->di->commentController->getUserGivenBadges($user->id);
         $received_badges = $this->di->commentController->getUserReceivedBadges($user->id);
+        $rank = $this->di->userController->calculateUserRank($user->id);
 
         $votes = array_merge($post_votes, $comment_votes);
         usort($votes, function($a, $b) {
@@ -76,6 +82,7 @@ class ProfileController implements InjectionAwareInterface
         $data = [
             'username' => $user->username,
             'gravatarString' => $gravatarString,
+            'rank' => $rank,
             'userPosts' => $posts,
             'userComments' => $comments,
             'votes' => $votes,

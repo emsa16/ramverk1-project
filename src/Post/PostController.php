@@ -314,6 +314,7 @@ class PostController implements InjectionAwareInterface
             $post = $this->getVoteStats($post, $loggedInUser);
             $post = $this->checkPosterPrivileges($post, $loggedInUser);
             $post->tags = $this->di->tagController->getTags($post);
+            $post->user_rank = $this->di->userController->calculateUserRank($post->userObject->id);
         }
         return $post;
     }
@@ -327,6 +328,7 @@ class PostController implements InjectionAwareInterface
             $post = $this->getVoteStats($post, $loggedInUser);
             $post = $this->checkPosterPrivileges($post, $loggedInUser);
             $post->tags = $this->di->tagController->getTags($post);
+            $post->user_rank = $this->di->userController->calculateUserRank($post->userObject->id);
             $posts[$key] = $post;
         }
         return $posts;
@@ -377,5 +379,15 @@ class PostController implements InjectionAwareInterface
     public function getUserVotes($user_id)
     {
         return $this->votes->getAll('user_id = ?', [$user_id]);
+    }
+
+
+
+    public function getPoints($id)
+    {
+        $upvotes = $this->votes->count('post_id = ? AND vote_value = ?', [$id, 1]);
+        $downvotes = $this->votes->count('post_id = ? AND vote_value = ?', [$id, 0]);
+        $points = ( (int)$upvotes - (int)$downvotes );
+        return $points;
     }
 }

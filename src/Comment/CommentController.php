@@ -343,6 +343,8 @@ class CommentController implements InjectionAwareInterface
             $comment->isUserPostOwner = $post->isUserOwner;
 
             $comment->stars = $this->rewards->count('comment_id = ?', [$comment->id]);
+
+            $comment->user_rank = $this->di->userController->calculateUserRank($comment->userObject->id);
         }
 
         return $comments;
@@ -434,5 +436,15 @@ class CommentController implements InjectionAwareInterface
             $comment->stars = $this->rewards->count('comment_id = ?', [$comment->id]);
             return $comment->stars;
         });
+    }
+
+
+
+    public function getPoints($id)
+    {
+        $upvotes = $this->votes->count('comment_id = ? AND vote_value = ?', [$id, 1]);
+        $downvotes = $this->votes->count('comment_id = ? AND vote_value = ?', [$id, 0]);
+        $points = ( (int)$upvotes - (int)$downvotes );
+        return $points;
     }
 }
