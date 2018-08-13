@@ -11,7 +11,6 @@ return [
             "callback" => function () {
                 $obj = new \Emsa\User\ProfileController();
                 $obj->setDI($this);
-                $obj->init();
                 return $obj;
             }
         ],

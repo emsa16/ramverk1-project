@@ -14,49 +14,11 @@ class ProfileController implements InjectionAwareInterface
 
 
 
-    /**
-     * Configuration.
-     */
-    public function init()
-    {
-        $this->users = $this->di->manager->createRepository(User::class, [
-            'db' => $this->di->db,
-            'type' => 'db-soft',
-            'table' => 'rv1proj_User'
-        ]);
-
-        $this->posts = $this->di->manager->createRepository(\Emsa\Post\Post::class, [
-            'db' => $this->di->db,
-            'type' => 'db-soft',
-            'table' => 'rv1proj_Post'
-        ]);
-
-        $this->postVotes = $this->di->manager->createRepository(\Emsa\Post\Vote::class, [
-            'db' => $this->di->db,
-            'type' => 'db',
-            'table' => 'rv1proj_Post_votes'
-        ]);
-
-        $this->comments = $this->di->manager->createRepository(\Emsa\Comment\Comment::class, [
-            'db' => $this->di->db,
-            'type' => 'db-soft',
-            'table' => 'rv1proj_Comment'
-        ]);
-
-        $this->commentVotes = $this->di->manager->createRepository(\Emsa\Comment\Vote::class, [
-            'db' => $this->di->db,
-            'type' => 'db',
-            'table' => 'rv1proj_Comment_votes'
-        ]);
-    }
-
-
-
     public function allUsers()
     {
         $title = "All users";
 
-        $users = $this->users->getAll();
+        $users = $this->di->userController->getAll();
 
         $sortBy = $this->sortBy();
         $sortArray = array();
@@ -87,7 +49,7 @@ class ProfileController implements InjectionAwareInterface
 
     public function showProfile($username)
     {
-        $user = $this->users->findSoft('username', $username);
+        $user = $this->di->userController->findSoft('username', $username);
         if (!$user) {
             $this->di->response->redirect('');
         }
@@ -96,10 +58,10 @@ class ProfileController implements InjectionAwareInterface
 
         $gravatarString = md5(strtolower(trim($user->email)));
 
-        $userPosts = $this->posts->getAll('user = ?', [$user->id]);
-        $userComments = $this->comments->getAll('user = ?', [$user->id]);
-        $userPostVotes = $this->postVotes->getAll('user_id = ?', [$user->id]);
-        $userCommentVotes = $this->commentVotes->getAll('user_id = ?', [$user->id]);
+        $userPosts = $this->di->postController->getUserPosts($user->id);
+        $userComments = $this->di->commentController->getUserComments($user->id);
+        $userPostVotes = $this->di->postController->getUserVotes($user->id);
+        $userCommentVotes = $this->di->commentController->getUserVotes($user->id);
 
         $votes = array_merge($userPostVotes, $userCommentVotes);
         usort($votes, function($a, $b) {

@@ -352,4 +352,18 @@ class CommentController implements InjectionAwareInterface
     {
         return $user == $comment->user || $this->di->session->has("admin");
     }
+
+
+
+    public function getUserComments($user_id)
+    {
+        return $this->comments->getAll('user = ?', [$user_id]);
+    }
+
+
+
+    public function getUserVotes($user_id)
+    {
+        return $this->votes->getAll('user_id = ?', [$user_id]);
+    }
 }

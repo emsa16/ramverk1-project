@@ -309,4 +309,18 @@ class UserController implements InjectionAwareInterface
         $loggedInUser = $this->users->findSoft('username', $username);
         return $loggedInUser ? $loggedInUser->id : null;
     }
+
+
+
+    public function getAll()
+    {
+        return $this->users->getAll();
+    }
+
+
+
+    public function findSoft($key, $value)
+    {
+        return $this->users->findSoft($key, $value);
+    }
 }

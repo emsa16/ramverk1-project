@@ -364,4 +364,18 @@ class PostController implements InjectionAwareInterface
         $sortRules = ["best", "old", "new", "popular"];
         return in_array($sortRequest, $sortRules) ? $sortRequest : "best";
     }
+
+
+
+    public function getUserPosts($user_id)
+    {
+        return $this->posts->getAll('user = ?', [$user_id]);
+    }
+
+
+
+    public function getUserVotes($user_id)
+    {
+        return $this->votes->getAll('user_id = ?', [$user_id]);
+    }
 }
