@@ -71,9 +71,42 @@
 ?>
 
 <h3>Received badges</h3>
-
-LATER
+<?php foreach ($received_badges as $comment) {
+        $url = $this->url("post/" . $comment->post_id . "#" . $comment->id);
+        $content = $comment->content;
+        $content = mb_strlen($content) > 50 ? substr($content, 0, 47) . "..." : $content;
+        $content = $textfilter->parse($content, ["htmlentities", "markdown"])->text;
+        $post_url = $this->url("post/" . $comment->post_id);
+        $post_title = $textfilter->parse($comment->postObject->title, ["htmlentities", "markdown"])->text;
+        ?>
+        <table>
+            <tr>
+                <td><?= $comment->stars ?> &#9734;: </td>
+                <td><a href='<?= $url ?>'><?= $content ?></a></td>
+                <td> in the post: </td>
+                <td><a href='<?= $post_url ?>'><?= $post_title ?></a></td>
+            </tr>
+        </table>
+        <?php
+}
+?>
 
 <h3>Given badges</h3>
-
-LATER
+<?php foreach ($given_badges as $badge) {
+        $url = $this->url("post/" . $badge->commentObject->post_id . "#" . $badge->comment_id);
+        $content = $badge->commentObject->content;
+        $content = mb_strlen($content) > 50 ? substr($content, 0, 47) . "..." : $content;
+        $content = $textfilter->parse($content, ["htmlentities", "markdown"])->text;
+        $post_url = $this->url("post/" . $badge->commentObject->post_id);
+        $post_title = $textfilter->parse($badge->commentObject->postObject->title, ["htmlentities", "markdown"])->text;
+        ?>
+        <table>
+            <tr>
+                <td><a href='<?= $url ?>'><?= $content ?></a></td>
+                <td> in the post: </td>
+                <td><a href='<?= $post_url ?>'><?= $post_title ?></a></td>
+            </tr>
+        </table>
+        <?php
+}
+?>

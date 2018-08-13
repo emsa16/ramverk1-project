@@ -58,12 +58,14 @@ class ProfileController implements InjectionAwareInterface
 
         $gravatarString = md5(strtolower(trim($user->email)));
 
-        $userPosts = $this->di->postController->getUserPosts($user->id);
-        $userComments = $this->di->commentController->getUserComments($user->id);
-        $userPostVotes = $this->di->postController->getUserVotes($user->id);
-        $userCommentVotes = $this->di->commentController->getUserVotes($user->id);
+        $posts = $this->di->postController->getUserPosts($user->id);
+        $comments = $this->di->commentController->getUserComments($user->id);
+        $post_votes = $this->di->postController->getUserVotes($user->id);
+        $comment_votes = $this->di->commentController->getUserVotes($user->id);
+        $given_badges = $this->di->commentController->getUserGivenBadges($user->id);
+        $received_badges = $this->di->commentController->getUserReceivedBadges($user->id);
 
-        $votes = array_merge($userPostVotes, $userCommentVotes);
+        $votes = array_merge($post_votes, $comment_votes);
         usort($votes, function($a, $b) {
             if ($a->id == $b->id) {
                 return 0;
@@ -74,9 +76,11 @@ class ProfileController implements InjectionAwareInterface
         $data = [
             'username' => $user->username,
             'gravatarString' => $gravatarString,
-            'userPosts' => $userPosts,
-            'userComments' => $userComments,
+            'userPosts' => $posts,
+            'userComments' => $comments,
             'votes' => $votes,
+            'given_badges' => $given_badges,
+            'received_badges' => $received_badges,
             'textfilter' => $this->di->textfilter,
         ];
 

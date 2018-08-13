@@ -30,6 +30,9 @@
 
         <div class='stats'>
             <?= $points ?> points | by <?= $username ?> | added <?= $created . $edited ?>
+            <?php if ($comment->stars) : ?>
+                <span class="rewarded"><?= $comment->stars ?> &#9734;</span>
+            <?php endif; ?>
         </div>
 
         <?php if ($action == "edit" && $actionID == $comment->id) : ?>
@@ -46,6 +49,13 @@
                 <?php if (!$comment->deleted && ($comment->isUserOwner || $comment->isUserAdmin)) : ?>
                     | <a href='<?= $this->url("post/$postid/edit-comment?id={$comment->id}#{$comment->id}") ?>'>edit</a>
                     | <a href='<?= $this->url("post/$postid/delete-comment?id={$comment->id}#{$comment->id}") ?>'>delete</a>
+                <?php endif; ?>
+
+                <?php if ($comment->isUserPostOwner) : ?>
+                    <?php $actionUrl = $this->url("post/{$postid}/reward?id={$comment->id}"); ?>
+                    <form class='reward' method="post" action="<?= $actionUrl ?>">
+                        <input type="submit" name="reward" value="Reward">
+                    </form>
                 <?php endif; ?>
             <?php endif; ?>
         </div>

@@ -41,6 +41,13 @@ class CommentController implements InjectionAwareInterface
         ]);
         $this->votes = $voteRepository;
 
+        $rewardRepository = $this->di->manager->createRepository(Reward::class, [
+            'db' => $this->di->db,
+            'type' => 'db',
+            'table' => 'rv1proj_Comment_rewards'
+        ]);
+        $this->rewards = $rewardRepository;
+
         return $commentRepository;
     }
 
@@ -277,6 +284,45 @@ class CommentController implements InjectionAwareInterface
 
 
 
+    public function rewardComment($postid)
+    {
+        $loggedInUser = $this->di->userController->getLoggedInUserId();
+        if (is_null($loggedInUser)) {
+            $this->di->response->redirect("post/$postid");
+        }
+
+        $actionID = (int)$this->di->request->getGet("id");
+        $currentComment = $this->comments->findSoft('id', $actionID);
+        if (!$currentComment) {
+            $this->di->response->redirect("post/$postid");
+        }
+
+        $post = $this->di->postController->getPost($postid, $loggedInUser);
+        if (!$post->isUserOwner) {
+            $this->di->response->redirect("post/$postid");
+        }
+
+        if ($this->di->request->getPost("reward")) {
+            $result = $this->rewards->getAll('comment_id = ? AND user_id = ?', [$currentComment->id, $loggedInUser]);
+            if (count($result) > 1) {
+                //There SHOULD never be more than one reward per user-comment pair, but just in case...
+                array_pop($result);
+                foreach ($result as $reward) {
+                    $this->rewards->delete($reward);
+                }
+            } else if (count($result) < 1) {
+                $reward = new Reward();
+                $reward->user_id = $loggedInUser;
+                $reward->comment_id = $currentComment->id;
+                $this->rewards->save($reward);
+            }
+        }
+
+        $this->di->response->redirect("post/$postid#{$currentComment->id}");
+    }
+
+
+
     public function getComments($postid, $loggedInUser)
     {
         $comments = $this->comments->getAll('post_id = ?', [$postid]);
@@ -292,6 +338,11 @@ class CommentController implements InjectionAwareInterface
 
             $comment->isUserOwner = ($loggedInUser == $comment->userObject->id);
             $comment->isUserAdmin = $this->di->session->has("admin");
+
+            $post = $this->di->postController->getPost($postid, $loggedInUser);
+            $comment->isUserPostOwner = $post->isUserOwner;
+
+            $comment->stars = $this->rewards->count('comment_id = ?', [$comment->id]);
         }
 
         return $comments;
@@ -365,5 +416,23 @@ class CommentController implements InjectionAwareInterface
     public function getUserVotes($user_id)
     {
         return $this->votes->getAll('user_id = ?', [$user_id]);
+    }
+
+
+
+    public function getUserGivenBadges($user_id)
+    {
+        return $this->rewards->getAll('user_id = ?', [$user_id]);
+    }
+
+
+
+    public function getUserReceivedBadges($user_id)
+    {
+        $user_comments = $this->getUserComments($user_id);
+        return array_filter($user_comments, function($comment) {
+            $comment->stars = $this->rewards->count('comment_id = ?', [$comment->id]);
+            return $comment->stars;
+        });
     }
 }

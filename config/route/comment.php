@@ -37,5 +37,11 @@ return [
             "path" => "{postid:digit}/vote-comment",
             "callable" => ["commentController", "voteComment"]
         ],
+        [
+            "info" => "Reward comment",
+            "requestMethod" => "post",
+            "path" => "{postid:digit}/reward",
+            "callable" => ["commentController", "rewardComment"]
+        ],
     ],
 ];

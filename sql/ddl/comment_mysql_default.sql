@@ -74,3 +74,26 @@ INSERT INTO rv1proj_Comment_votes(user_id, comment_id, vote_value) VALUES
     (6, 2, 0),
     (4, 2, 0)
 ;
+
+
+
+--
+-- Table Comment_rewards
+--
+DROP TABLE IF EXISTS rv1proj_Comment_rewards;
+CREATE TABLE rv1proj_Comment_rewards (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `user_id` INTEGER DEFAULT NULL,
+    `comment_id` INTEGER DEFAULT NULL,
+
+    FOREIGN KEY (`user_id`) REFERENCES `rv1proj_User` (`id`) ON DELETE SET NULL,
+    FOREIGN KEY (`comment_id`) REFERENCES `rv1proj_Comment` (`id`) ON DELETE SET NULL
+) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO rv1proj_Comment_rewards(user_id, comment_id) VALUES
+    (3, 1),
+    (5, 1),
+    (2, 1),
+    (6, 2),
+    (4, 2)
+;
