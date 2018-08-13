@@ -15,7 +15,7 @@ $urlToViewItems = $this->url("admin");
     <?php endif; ?>
 
     <div class="form-control">
-        <div class="form-label"><?= $form->label('username', 'Username:') ?></label></div>
+        <div class="form-label"><?= $form->label('username', 'Username:') ?></div>
         <div class="form-input">
             <?= $form->text('username', ['autofocus' => true]) ?>
 

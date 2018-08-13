@@ -8,7 +8,7 @@
 
 <form id="<?= $form->id ?>" class="form" action="<?= $this->currentUrl() ?>" method="post">
     <div class="form-control">
-        <div class="form-label"><?= $form->label('username', 'Username:') ?></label></div>
+        <div class="form-label"><?= $form->label('username', 'Username:') ?></div>
         <div class="form-input">
             <?= $form->text('username', ['autofocus' => true]) ?>
 

@@ -15,9 +15,18 @@
 <?php foreach ($userComments as $comment) {
     $comment_url = $this->url("post/" . $comment->post_id . "#" . $comment->id);
     $content = mb_strlen($comment->content) > 50 ? substr($comment->content, 0, 47) . "..." : $comment->content;
+    $content = $textfilter->parse($content, ["htmlentities", "markdown"])->text;
     $post_url = $this->url("post/" . $comment->post_id);
-    $post_title = $comment->postObject->title;
-    echo "<p><a href='$comment_url'>$content</a> in the post: <a href='$post_url'>$post_title</a><p>";
+    $post_title = $textfilter->parse($comment->postObject->title, ["htmlentities", "markdown"])->text;
+    ?>
+    <table>
+        <tr>
+            <td><a href='<?= $comment_url ?>'><?= $content ?></a></td>
+            <td> in the post: </td>
+            <td><a href='<?= $post_url ?>'><?= $post_title ?></a></td>
+        </tr>
+    </table>
+    <?php
 }
 ?>
 
@@ -31,14 +40,32 @@
 
     if (property_exists($vote, 'post_id')) {
         $url = $this->url("post/" . $vote->post_id);
-        $title = $vote->postObject->title;
-        echo "<p>$arrow POST: <a href='$url'>$title</a></p>";
+        $title = $textfilter->parse($vote->postObject->title, ["htmlentities", "markdown"])->text;
+        ?>
+        <table>
+            <tr>
+                <td><?= $arrow ?> POST: </td>
+                <td><a href='<?= $url ?>'><?= $title ?></a></td>
+            </tr>
+        </table>
+        <?php
     } else if (property_exists($vote, 'comment_id')) {
         $url = $this->url("post/" . $vote->commentObject->post_id . "#" . $vote->comment_id);
         $content = $vote->commentObject->content;
+        $content = mb_strlen($content) > 50 ? substr($content, 0, 47) . "..." : $content;
+        $content = $textfilter->parse($content, ["htmlentities", "markdown"])->text;
         $post_url = $this->url("post/" . $vote->commentObject->post_id);
-        $post_title = $vote->commentObject->postObject->title;
-        echo "<p>$arrow COMMENT: <a href='$url'>$content</a> in the post: <a href='$post_url'>$post_title</a></p>";
+        $post_title = $textfilter->parse($vote->commentObject->postObject->title, ["htmlentities", "markdown"])->text;
+        ?>
+        <table>
+            <tr>
+                <td><?= $arrow ?> COMMENT: </td>
+                <td><a href='<?= $url ?>'><?= $content ?></a></td>
+                <td> in the post: </td>
+                <td><a href='<?= $post_url ?>'><?= $post_title ?></a></td>
+            </tr>
+        </table>
+        <?php
     }
 }
 ?>

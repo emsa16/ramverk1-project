@@ -8,7 +8,7 @@ use \LRC\Repository\SoftManagedModelTrait;
 use \Emsa\User\User;
 
 /**
- * Comment class.
+ * Vote class.
  *
  * @SuppressWarnings(PHPMD.ExitExpression)
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)

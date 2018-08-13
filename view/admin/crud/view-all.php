@@ -40,6 +40,9 @@ endif;
         <td>
             <a href="<?= $this->url("admin/delete/{$user->id}") ?>">Remove</a>
         </td>
+        <td>
+            <a href="<?= $this->url("profile/" . $user->username) ?>">View profile</a>
+        </td>
 
     </tr>
     <?php endforeach; ?>
