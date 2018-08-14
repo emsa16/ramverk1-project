@@ -38,19 +38,6 @@ CREATE TABLE rv1proj_Comment (
     FOREIGN KEY (`post_id`) REFERENCES `rv1proj_Post` (`id`) ON DELETE SET NULL
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO rv1proj_Comment(post_id, parent_id, user, created, edited, content) VALUES
-    (1, 0, 3, "2016-07-21 12:00:00", "2017-07-22 13:05:00", "Jag älskar katter"),
-    (1, 0, 4, "2015-07-22 12:00:00", NULL, "lol"),
-    (2, 0, 3, "2017-07-21 12:00:00", NULL, "Söt hund."),
-    (2, 0, 3, "2016-07-21 12:00:00", NULL, "Jag har en tax."),
-    (1, 1, 5, "2017-09-10 12:00:00", "2017-09-20 12:00:00", "varför"),
-    (2, 4, 6, "2016-07-21 12:00:00", NULL, "Jag älskar katter"),
-    (1, 1, 4, "2017-09-01 12:00:00", "2017-09-19 12:00:00", "ja!"),
-    (1, 5, 3, "2017-09-16 12:00:00", "2017-09-20 20:00:00", "Usch."),
-    (1, 2, 3, "2017-04-21 12:00:00", NULL, "jaså."),
-    (1, 2, 5, "2017-08-10 12:00:00", NULL, "jepp")
-;
-
 
 
 --
@@ -67,14 +54,6 @@ CREATE TABLE rv1proj_Comment_votes (
     FOREIGN KEY (`comment_id`) REFERENCES `rv1proj_Comment` (`id`) ON DELETE SET NULL
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO rv1proj_Comment_votes(user_id, comment_id, vote_value) VALUES
-    (3, 1, 1),
-    (5, 1, 1),
-    (2, 1, 0),
-    (6, 2, 0),
-    (4, 2, 0)
-;
-
 
 
 --
@@ -89,11 +68,3 @@ CREATE TABLE rv1proj_Comment_rewards (
     FOREIGN KEY (`user_id`) REFERENCES `rv1proj_User` (`id`) ON DELETE SET NULL,
     FOREIGN KEY (`comment_id`) REFERENCES `rv1proj_Comment` (`id`) ON DELETE SET NULL
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-INSERT INTO rv1proj_Comment_rewards(user_id, comment_id) VALUES
-    (3, 1),
-    (5, 1),
-    (2, 1),
-    (6, 2),
-    (4, 2)
-;

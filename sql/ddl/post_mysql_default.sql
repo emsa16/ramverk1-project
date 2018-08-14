@@ -36,13 +36,6 @@ CREATE TABLE rv1proj_Post (
     FOREIGN KEY (`user`) REFERENCES `rv1proj_User` (`id`) ON DELETE SET NULL
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO rv1proj_Post(user, created, edited, title, content) VALUES
-    (2, "2018-03-11 12:00:00", NULL, "Who is your favourite character and why?", "Mine is Kramer, because he is so whacky and clearly the most physically talented of them all."),
-    (3, "2018-03-18 12:00:00", NULL, "Tell us your favorite moment from the series?", "Please also reference the episode title :)"),
-    (5, "2018-04-02 12:00:00", "2018-04-04 12:00:00", "Why can't George keep a job [THEORY]", "I think it is because he has commitment issues. Thoughts?"),
-    (4, "2018-05-20 12:00:00", NULL, "Seinfeld sucks", "Friends is so much better IMO!")
-;
-
 
 
 --
@@ -59,14 +52,6 @@ CREATE TABLE rv1proj_Post_votes (
     FOREIGN KEY (`post_id`) REFERENCES `rv1proj_Post` (`id`) ON DELETE SET NULL
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO rv1proj_Post_votes(user_id, post_id, vote_value) VALUES
-    (3, 1, 1),
-    (5, 1, 1),
-    (2, 1, 0),
-    (6, 2, 0),
-    (4, 2, 0)
-;
-
 
 
 --
@@ -77,14 +62,6 @@ CREATE TABLE rv1proj_Tag (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `title` VARCHAR(80) NOT NULL
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-INSERT INTO rv1proj_Tag(title) VALUES
-    ("debate"),
-    ("parody"),
-    ("fantheory"),
-    ("news"),
-    ("announcements")
-;
 
 
 
@@ -100,8 +77,3 @@ CREATE TABLE rv1proj_Posts_tags (
     FOREIGN KEY (`tag_id`) REFERENCES `rv1proj_Tag` (`id`) ON DELETE SET NULL,
     FOREIGN KEY (`post_id`) REFERENCES `rv1proj_Post` (`id`) ON DELETE SET NULL
 ) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-INSERT INTO rv1proj_Posts_tags(tag_id, post_id) VALUES
-    (3, 3),
-    (1, 1)
-;
