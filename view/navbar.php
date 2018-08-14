@@ -14,8 +14,10 @@ $visibility = $this->di->session->has("username") ? 'login' : 'logout';
         <?php foreach ($navbar["items"] as $item) : ?>
             <?php if (isset($item["visibility"]) && $visibility !== $item["visibility"]) {
                 continue;
+            // phpcs:disable
             }
             ?>
+            <!-- phpcs:enable -->
             <li
             <?php if ($this->url($item["route"]) === $current) : ?>
                  class='current'

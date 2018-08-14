@@ -10,7 +10,8 @@
     }
 
     if (!$post->userObject->deleted) {
-        $username = "<a href='" . $this->url("profile") . "/" .  $post->userObject->username . "'>" . $post->userObject->username . "</a> (" . $post->user_rank . ")";
+        $username = $post->userObject->username;
+        $username = "<a href='" . $this->url("profile") . "/$username'>$username</a> ({$post->user_rank})";
     } else {
         $username = "[deleted]";
     }
@@ -30,7 +31,9 @@
     <div class='post'>
         <table class='title'>
             <tr>
-                <td><a href="<?= $this->url("post/{$post->id}") ?>"><?= !$post->deleted ? $title : "<p><i>deleted</i></p>" ?></a></td>
+                <td><a href="<?= $this->url("post/{$post->id}") ?>">
+                    <?= !$post->deleted ? $title : "<p><i>deleted</i></p>" ?>
+                </a></td>
                 <td><span class='tags'><?= $tags ?></span></td>
             </tr>
         </table>
@@ -48,8 +51,10 @@
 $tagUrl = $this->url("tags");
 foreach ($pop_tags as $tag) {
     ?>
-    <p><a href="<?= $tagUrl . "/" .  $textfilter->parse($tag->title, ["htmlentities"])->text ?>"><?= $textfilter->parse($tag->title, ["htmlentities"])->text ?> (<?= $tag->count ?>)</a></p>
-<?php
+    <p><a href="<?= $tagUrl . "/" .  $textfilter->parse($tag->title, ["htmlentities"])->text ?>">
+        <?= $textfilter->parse($tag->title, ["htmlentities"])->text ?> (<?= $tag->count ?>)
+    </a></p>
+    <?php
 }
 ?>
 
@@ -72,5 +77,5 @@ foreach ($users as $user) {
             <td class="ranking">(rank: <?= $user->rank ?>)</td>
         </tr>
     </table>
-<?php
+    <?php
 }

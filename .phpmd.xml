@@ -16,8 +16,10 @@
         <exclude name="BooleanArgumentFlag" />
         <exclude name="ElseExpression" />
     </rule>
-    
-    <rule ref="rulesets/codesize.xml" />
+
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="ExcessiveClassComplexity" />
+    </rule>
 
     <rule ref="rulesets/controversial.xml">
         <exclude name="Superglobals" />

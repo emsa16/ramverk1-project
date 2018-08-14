@@ -17,5 +17,5 @@ foreach ($users as $user) {
             <td class="ranking">(rank: <?= $user->rank ?>)</td>
         </tr>
     </table>
-<?php
+    <?php
 }

@@ -152,9 +152,9 @@ class PostController implements InjectionAwareInterface
         }
 
         if (!property_exists($currentPost, 'tag_string')) {
-            $currentPost->tag_string = array_reduce($currentPost->tags, function($tag_string, $tag) {
-                if (!is_null($tag_string)) {
-                    return $tag_string . ", " . $tag->title;
+            $currentPost->tag_string = array_reduce($currentPost->tags, function ($tagString, $tag) {
+                if (!is_null($tagString)) {
+                    return $tagString . ", " . $tag->title;
                 }
                 return $tag->title;
             });
@@ -212,8 +212,6 @@ class PostController implements InjectionAwareInterface
             $this->di->response->redirect("post");
         }
 
-        $editForm = new ModelForm('edit-post-form', $currentPost);
-
         if ($this->di->request->getMethod() == 'POST') {
             if ($this->di->request->getPost('delete') == 'Yes') {
                 unset($currentPost->edited);
@@ -223,7 +221,7 @@ class PostController implements InjectionAwareInterface
                 unset($currentPost->downvote);
                 unset($currentPost->userVote);
                 unset($currentPost->tags);
-                unset($post->user_rank);
+                unset($currentPost->user_rank);
                 $this->posts->deleteSoft($currentPost);
                 $this->di->response->redirect("post");
             } else {
@@ -266,48 +264,51 @@ class PostController implements InjectionAwareInterface
         }
 
         if (is_null($loggedInUser)) {
-            if ('overview' == $location) {
-                $this->di->response->redirect("post");
-            } else if ('in-page' == $location) {
-                $this->di->response->redirect("post/$postid");
-            }
+            $this->redirectVoter($location, $postid);
         }
 
-        $vote_value = "";
+        $voteValue = "";
         if ($this->di->request->getPost("upvote")) {
-            $vote_value = 1;
+            $voteValue = 1;
         } elseif ($this->di->request->getPost("downvote")) {
-            $vote_value = 0;
+            $voteValue = 0;
         }
 
         $result = $this->votes->getAll('post_id = ? AND user_id = ?', [$postid, $loggedInUser]);
         if (count($result) > 0) {
             if (count($result) > 1) {
                 //There SHOULD never be more than one vote per user-post pair, but just in case...
-                $temp_result = array(array_pop($result));
+                $tempResult = array(array_pop($result));
                 foreach ($result as $vote) {
                     $this->votes->delete($vote);
                 }
-                $result = $temp_result;
+                $result = $tempResult;
             }
             $vote = $result[0];
-            if ($vote->vote_value == $vote_value) {
+            if ($vote->vote_value == $voteValue) {
                 $this->votes->delete($vote);
             } else {
-                $vote->vote_value = $vote_value;
+                $vote->vote_value = $voteValue;
                 $this->votes->save($vote);
             }
         } else {
             $vote = new Vote();
-            $vote->vote_value = $vote_value;
+            $vote->vote_value = $voteValue;
             $vote->user_id = $loggedInUser;
             $vote->post_id = $postid;
             $this->votes->save($vote);
         }
 
+        $this->redirectVoter($location, $postid);
+    }
+
+
+
+    private function redirectVoter($location, $postid)
+    {
         if ('overview' == $location) {
             $this->di->response->redirect("post");
-        } else if ('in-page' == $location) {
+        } elseif ('in-page' == $location) {
             $this->di->response->redirect("post/$postid");
         }
     }
@@ -344,7 +345,7 @@ class PostController implements InjectionAwareInterface
 
 
 
-    public function getVoteStats($post, $loggedInUser)
+    private function getVoteStats($post, $loggedInUser)
     {
         $post->upvote = $this->votes->count('post_id = ? AND vote_value = ?', [$post->id, 1]);
         $post->downvote = $this->votes->count('post_id = ? AND vote_value = ?', [$post->id, 0]);
@@ -359,7 +360,7 @@ class PostController implements InjectionAwareInterface
 
 
 
-    public function checkPosterPrivileges($post, $loggedInUser)
+    private function checkPosterPrivileges($post, $loggedInUser)
     {
         $post->isUserOwner = ($loggedInUser == $post->userObject->id);
         $post->isUserAdmin = $this->di->session->has("admin");
@@ -377,16 +378,16 @@ class PostController implements InjectionAwareInterface
 
 
 
-    public function getUserPosts($user_id)
+    public function getUserPosts($userId)
     {
-        return $this->posts->getAll('user = ?', [$user_id]);
+        return $this->posts->getAll('user = ?', [$userId]);
     }
 
 
 
-    public function getUserVotes($user_id)
+    public function getUserVotes($userId)
     {
-        return $this->votes->getAll('user_id = ?', [$user_id]);
+        return $this->votes->getAll('user_id = ?', [$userId]);
     }
 
 

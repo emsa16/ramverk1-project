@@ -290,8 +290,9 @@ class ModelForm
     public function textarea($prop, $attrs = [])
     {
         //Note: Text does not seem to need to be sanitized since it is inside a textarea field
-        return '<textarea ' . $this->getAttributeString($prop, $attrs) . '>' . $this->getFieldValue($prop) . '</textarea>';
-        // return '<textarea ' . $this->getAttributeString($prop, $attrs) . '>' . htmlspecialchars($this->getFieldValue($prop)) . '</textarea>';
+        $attrStr = $this->getAttributeString($prop, $attrs);
+        $value = $this->getFieldValue($prop);
+        return '<textarea ' . $attrStr . '>' . $value . '</textarea>';
     }
 
 
@@ -390,7 +391,8 @@ class ModelForm
      *
      * @param string    $field  Model property/field name.
      *
-     * @return mixed            Field value, or null if the field is not found in either the model or the extraneous parameters.
+     * @return mixed            Field value, or null if the field is not found in
+     *                          either the model or the extraneous parameters.
      */
     private function getFieldValue($field)
     {

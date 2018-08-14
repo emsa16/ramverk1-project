@@ -71,7 +71,7 @@ class CommentController implements InjectionAwareInterface
         }
 
         $post = $this->di->postController->getPost($postid, $loggedInUser);
-        $post_title = $post->title;
+        $postTitle = $post->title;
 
         $comments = $this->getComments($postid, $loggedInUser);
         $sortBy = $this->sortBy();
@@ -88,7 +88,7 @@ class CommentController implements InjectionAwareInterface
         ];
 
         $this->di->view->add("comment/comment-section", $viewData, "main", 2);
-        $this->di->pageRender->renderPage(["title" => $post_title]);
+        $this->di->pageRender->renderPage(["title" => $postTitle]);
     }
 
 
@@ -118,7 +118,7 @@ class CommentController implements InjectionAwareInterface
         }
 
         $post = $this->di->postController->getPost($postid, $loggedInUser);
-        $post_title = $post->title;
+        $postTitle = $post->title;
 
         $comments = $this->getComments($postid, $loggedInUser);
         $sortBy = $this->sortBy();
@@ -136,7 +136,7 @@ class CommentController implements InjectionAwareInterface
         ];
 
         $this->di->view->add("comment/comment-section", $viewData, "main", 2);
-        $this->di->pageRender->renderPage(["title" => "Reply: " . $post_title]);
+        $this->di->pageRender->renderPage(["title" => "Reply: " . $postTitle]);
     }
 
 
@@ -168,7 +168,7 @@ class CommentController implements InjectionAwareInterface
         }
 
         $post = $this->di->postController->getPost($postid, $loggedInUser);
-        $post_title = $post->title;
+        $postTitle = $post->title;
 
         $comments = $this->getComments($postid, $loggedInUser);
         $sortBy = $this->sortBy();
@@ -186,7 +186,7 @@ class CommentController implements InjectionAwareInterface
         ];
 
         $this->di->view->add("comment/comment-section", $viewData, "main", 2);
-        $this->di->pageRender->renderPage(["title" => "Edit comment - " . $post_title]);
+        $this->di->pageRender->renderPage(["title" => "Edit comment - " . $postTitle]);
     }
 
 
@@ -212,7 +212,7 @@ class CommentController implements InjectionAwareInterface
         }
 
         $post = $this->di->postController->getPost($postid, $loggedInUser);
-        $post_title = $post->title;
+        $postTitle = $post->title;
 
         $comments = $this->getComments($postid, $loggedInUser);
         $sortBy = $this->sortBy();
@@ -229,7 +229,7 @@ class CommentController implements InjectionAwareInterface
         ];
 
         $this->di->view->add("comment/comment-section", $viewData, "main", 2);
-        $this->di->pageRender->renderPage(["title" => "Delete comment - " . $post_title]);
+        $this->di->pageRender->renderPage(["title" => "Delete comment - " . $postTitle]);
     }
 
 
@@ -247,33 +247,33 @@ class CommentController implements InjectionAwareInterface
             $this->di->response->redirect("post/$postid");
         }
 
-        $vote_value = "";
+        $voteValue = "";
         if ($this->di->request->getPost("upvote")) {
-            $vote_value = 1;
+            $voteValue = 1;
         } elseif ($this->di->request->getPost("downvote")) {
-            $vote_value = 0;
+            $voteValue = 0;
         }
 
         $result = $this->votes->getAll('comment_id = ? AND user_id = ?', [$currentComment->id, $loggedInUser]);
         if (count($result) > 0) {
             if (count($result) > 1) {
                 //There SHOULD never be more than one vote per user-comment pair, but just in case...
-                $temp_result = array(array_pop($result));
+                $tempResult = array(array_pop($result));
                 foreach ($result as $vote) {
                     $this->votes->delete($vote);
                 }
-                $result = $temp_result;
+                $result = $tempResult;
             }
             $vote = $result[0];
-            if ($vote->vote_value == $vote_value) {
+            if ($vote->vote_value == $voteValue) {
                 $this->votes->delete($vote);
             } else {
-                $vote->vote_value = $vote_value;
+                $vote->vote_value = $voteValue;
                 $this->votes->save($vote);
             }
         } else {
             $vote = new Vote();
-            $vote->vote_value = $vote_value;
+            $vote->vote_value = $voteValue;
             $vote->user_id = $loggedInUser;
             $vote->comment_id = $currentComment->id;
             $this->votes->save($vote);
@@ -310,7 +310,7 @@ class CommentController implements InjectionAwareInterface
                 foreach ($result as $reward) {
                     $this->rewards->delete($reward);
                 }
-            } else if (count($result) < 1) {
+            } elseif (count($result) < 1) {
                 $reward = new Reward();
                 $reward->user_id = $loggedInUser;
                 $reward->comment_id = $currentComment->id;
@@ -352,7 +352,7 @@ class CommentController implements InjectionAwareInterface
 
 
 
-    public function sortBy()
+    private function sortBy()
     {
         $sortRequest = $this->di->request->getGet("sort");
         $sortRules = ["best", "old", "new"];
@@ -361,7 +361,7 @@ class CommentController implements InjectionAwareInterface
 
 
 
-    public function buildCommentTree(array &$elements, $sortBy, $parentId = 0)
+    private function buildCommentTree(array &$elements, $sortBy, $parentId = 0)
     {
         $branch = array();
 
@@ -376,7 +376,7 @@ class CommentController implements InjectionAwareInterface
 
 
 
-    public function sortBranchComments(array &$branch, $sortBy = "best")
+    private function sortBranchComments(array &$branch, $sortBy = "best")
     {
         $sortOrder = SORT_DESC;
         $sortArray = array();
@@ -401,38 +401,38 @@ class CommentController implements InjectionAwareInterface
 
 
 
-    public function canComment($user, $comment)
+    private function canComment($user, $comment)
     {
         return $user == $comment->user || $this->di->session->has("admin");
     }
 
 
 
-    public function getUserComments($user_id)
+    public function getUserComments($userId)
     {
-        return $this->comments->getAll('user = ?', [$user_id]);
+        return $this->comments->getAll('user = ?', [$userId]);
     }
 
 
 
-    public function getUserVotes($user_id)
+    public function getUserVotes($userId)
     {
-        return $this->votes->getAll('user_id = ?', [$user_id]);
+        return $this->votes->getAll('user_id = ?', [$userId]);
     }
 
 
 
-    public function getUserGivenBadges($user_id)
+    public function getUserGivenBadges($userId)
     {
-        return $this->rewards->getAll('user_id = ?', [$user_id]);
+        return $this->rewards->getAll('user_id = ?', [$userId]);
     }
 
 
 
-    public function getUserReceivedBadges($user_id)
+    public function getUserReceivedBadges($userId)
     {
-        $user_comments = $this->getUserComments($user_id);
-        return array_filter($user_comments, function($comment) {
+        $userComments = $this->getUserComments($userId);
+        return array_filter($userComments, function ($comment) {
             $comment->stars = $this->rewards->count('comment_id = ?', [$comment->id]);
             return $comment->stars;
         });

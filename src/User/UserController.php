@@ -336,22 +336,22 @@ class UserController implements InjectionAwareInterface
      *
      * @return integer $rank
      */
-    public function calculateUserRank($user_id)
+    public function calculateUserRank($userId)
     {
         $rank = 0;
 
-        $badged_comments = $this->di->commentController->getUserReceivedBadges($user_id);
-        foreach ($badged_comments as $comment) {
+        $badgedComments = $this->di->commentController->getUserReceivedBadges($userId);
+        foreach ($badgedComments as $comment) {
             $rank += $comment->stars * 25;
         }
 
-        $posts = $this->di->postController->getUserPosts($user_id);
+        $posts = $this->di->postController->getUserPosts($userId);
         foreach ($posts as $post) {
             $points = $this->di->postController->getPoints($post->id);
             $rank += $points * 5;
         }
 
-        $comments = $this->di->commentController->getUserComments($user_id);
+        $comments = $this->di->commentController->getUserComments($userId);
         foreach ($comments as $comment) {
             $points = $this->di->commentController->getPoints($comment->id);
             $rank += $points * 5;

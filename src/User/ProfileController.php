@@ -23,23 +23,25 @@ class ProfileController implements InjectionAwareInterface
             $user->rank = $this->di->userController->calculateUserRank($user->id);
         }
 
-        $sortBy = $this->sortBy();
-        $sortArray = array();
-        foreach ($users as $key => $user) {
-            switch ($sortBy) {
-                case 'rank':
-                    $sortArray[$key] = $user->rank;
-                    $sort_order = SORT_DESC;
-                    break;
-                case 'name':
-                    //Intentional fall through
-                default:
-                    $sortArray[$key] = $user->username;
-                    $sort_order = SORT_ASC;
-                    break;
+        if (count($users) > 0) {
+            $sortBy = $this->sortBy();
+            $sortArray = array();
+            foreach ($users as $key => $user) {
+                switch ($sortBy) {
+                    case 'rank':
+                        $sortArray[$key] = $user->rank;
+                        $sortOrder = SORT_DESC;
+                        break;
+                    case 'name':
+                        //Intentional fall through
+                    default:
+                        $sortArray[$key] = $user->username;
+                        $sortOrder = SORT_ASC;
+                        break;
+                }
             }
+            array_multisort($sortArray, $sortOrder, $users);
         }
-        array_multisort($sortArray, $sort_order, $users);
 
         $data = [
             'users' => $users,
@@ -65,19 +67,19 @@ class ProfileController implements InjectionAwareInterface
 
         $posts = $this->di->postController->getUserPosts($user->id);
         $comments = $this->di->commentController->getUserComments($user->id);
-        $post_votes = $this->di->postController->getUserVotes($user->id);
-        $comment_votes = $this->di->commentController->getUserVotes($user->id);
-        $given_badges = $this->di->commentController->getUserGivenBadges($user->id);
-        $received_badges = $this->di->commentController->getUserReceivedBadges($user->id);
+        $postVotes = $this->di->postController->getUserVotes($user->id);
+        $commentVotes = $this->di->commentController->getUserVotes($user->id);
+        $givenBadges = $this->di->commentController->getUserGivenBadges($user->id);
+        $receivedBadges = $this->di->commentController->getUserReceivedBadges($user->id);
         $rank = $this->di->userController->calculateUserRank($user->id);
 
-        $votes = array_merge($post_votes, $comment_votes);
-        usort($votes, function($a, $b) {
-            if ($a->id == $b->id) {
+        $votes = array_merge($postVotes, $commentVotes);
+        usort($votes, function ($vote1, $vote2) {
+            if ($vote1->id == $vote2->id) {
                 return 0;
             }
-            return ($a->id < $b->id) ? -1 : 1;
-        } );
+            return ($vote1->id < $vote2->id) ? -1 : 1;
+        });
 
         $data = [
             'username' => $user->username,
@@ -86,8 +88,8 @@ class ProfileController implements InjectionAwareInterface
             'userPosts' => $posts,
             'userComments' => $comments,
             'votes' => $votes,
-            'given_badges' => $given_badges,
-            'received_badges' => $received_badges,
+            'given_badges' => $givenBadges,
+            'received_badges' => $receivedBadges,
             'textfilter' => $this->di->textfilter,
         ];
 
@@ -98,7 +100,7 @@ class ProfileController implements InjectionAwareInterface
 
 
 
-    public function sortBy()
+    private function sortBy()
     {
         $sortRequest = $this->di->request->getGet("sort");
         $sortRules = ["name", "rank"];

@@ -17,7 +17,7 @@ $urlToCreate = $this->url("admin/create");
 
 <?php if (!$users) : ?>
     <p>There are no members.</p>
-<?php
+    <?php
     return;
 endif;
 ?>

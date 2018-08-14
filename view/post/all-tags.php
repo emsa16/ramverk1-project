@@ -7,6 +7,8 @@
 $tagUrl = $this->url("tags");
 foreach ($tags as $tag) {
     ?>
-    <p><a href="<?= $tagUrl . "/" .  $textfilter->parse($tag->title, ["htmlentities"])->text ?>"><?= $textfilter->parse($tag->title, ["htmlentities"])->text ?> (<?= $tag->count ?>)</a></p>
-<?php
+    <p><a href="<?= $tagUrl . "/" .  $textfilter->parse($tag->title, ["htmlentities"])->text ?>">
+        <?= $textfilter->parse($tag->title, ["htmlentities"])->text ?> (<?= $tag->count ?>)
+    </a></p>
+    <?php
 }

@@ -50,7 +50,8 @@ $content = $textfilter->parse($post->content, ["htmlentities", "markdown"])->tex
         <?= $points ?> points, created by <?= $username ?>, added <?= $created . $edited ?>
     </div>
 
-    <?php if (!($post->deleted && strtotime($post->deleted) < time()) && ($post->isUserOwner || $post->isUserAdmin)) : ?>
+    <?php if (!($post->deleted && strtotime($post->deleted) < time())
+              && ($post->isUserOwner || $post->isUserAdmin)) : ?>
         <div class='actions'>
             <a href='<?= $this->url("post/{$post->id}/edit-post") ?>'>edit</a>
             | <a href='<?= $this->url("post/{$post->id}/delete-post") ?>'>delete</a>

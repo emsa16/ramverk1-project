@@ -52,7 +52,7 @@
             </tr>
         </table>
         <?php
-    } else if (property_exists($vote, 'comment_id')) {
+    } elseif (property_exists($vote, 'comment_id')) {
         $url = $this->url("post/" . $vote->commentObject->post_id . "#" . $vote->comment_id);
         $content = $vote->commentObject->content;
         $content = mb_strlen($content) > 50 ? substr($content, 0, 47) . "..." : $content;
@@ -81,7 +81,7 @@
         $content = $textfilter->parse($content, ["htmlentities", "markdown"])->text;
         $post_url = $this->url("post/" . $comment->post_id);
         $post_title = $textfilter->parse($comment->postObject->title, ["htmlentities", "markdown"])->text;
-        ?>
+    ?>
         <table>
             <tr>
                 <td><?= $comment->stars ?> &#9734;: </td>
@@ -102,7 +102,7 @@
         $content = $textfilter->parse($content, ["htmlentities", "markdown"])->text;
         $post_url = $this->url("post/" . $badge->commentObject->post_id);
         $post_title = $textfilter->parse($badge->commentObject->postObject->title, ["htmlentities", "markdown"])->text;
-        ?>
+    ?>
         <table>
             <tr>
                 <td><a href='<?= $url ?>'><?= $content ?></a></td>

@@ -27,11 +27,11 @@ class FrontpageController implements InjectionAwareInterface
 
         $tags = $this->di->tagController->getAll();
         $tags = $this->di->tagController->getTagPopularity($tags);
-        usort($tags, function($a, $b) {
-            if ($a->count == $b->count) {
+        usort($tags, function ($tag1, $tag2) {
+            if ($tag1->count == $tag2->count) {
                 return 0;
             }
-            return ($a->count < $b->count) ? 1 : -1;
+            return ($tag1->count < $tag2->count) ? 1 : -1;
         });
         $tags = array_slice($tags, 0, 5);
 
@@ -39,11 +39,11 @@ class FrontpageController implements InjectionAwareInterface
         foreach ($users as $user) {
             $user->rank = $this->di->userController->calculateUserRank($user->id);
         }
-        usort($users, function($a, $b) {
-            if ($a->rank == $b->rank) {
+        usort($users, function ($user1, $user2) {
+            if ($user1->rank == $user2->rank) {
                 return 0;
             }
-            return ($a->rank < $b->rank) ? 1 : -1;
+            return ($user1->rank < $user2->rank) ? 1 : -1;
         });
         $users = array_slice($users, 0, 5);
 

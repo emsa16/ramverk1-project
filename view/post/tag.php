@@ -14,7 +14,8 @@
         $points = ( (int)$post->upvote - (int)$post->downvote );
 
         if (!$post->userObject->deleted) {
-            $username = "<a href='" . $this->url("profile") . "/" .  $post->userObject->username . "'>" . $post->userObject->username . "</a>";
+            $username = $post->userObject->username;
+            $username = "<a href='" . $this->url("profile") . "/$username'>$username</a>";
         } else {
             $username = "[deleted]";
         }
@@ -36,13 +37,18 @@
 
             <table class='title'>
                 <tr>
-                    <td><a href="<?= $this->url("post/{$post->id}") ?>"><?= !$post->deleted ? $title : "<p><i>deleted</i></p>" ?></a></td>
+                    <td><a href="<?= $this->url("post/{$post->id}") ?>">
+                        <?= !$post->deleted ? $title : "<p><i>deleted</i></p>" ?>
+                    </a></td>
                     <td><span class='tags'><?= $tags ?></span></td>
                 </tr>
             </table>
 
             <div class='stats'>
-                <?= $post->commentCount ?> comments, <?= $points ?> points, created by <?= $username ?>, added <?= $created ?>
+                <?= $post->commentCount ?> comments,
+                <?= $points ?> points,
+                created by <?= $username ?>,
+                added <?= $created ?>
             </div>
 
             <?php if ($post->isUserOwner || $post->isUserAdmin) : ?>

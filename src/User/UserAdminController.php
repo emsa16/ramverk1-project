@@ -46,7 +46,7 @@ class UserAdminController implements InjectionAwareInterface
     {
         if (!$this->di->session->has("username")) {
             $this->di->response->redirect('login');
-        } else if (!$this->di->session->has("admin")) {
+        } elseif (!$this->di->session->has("admin")) {
             $this->di->response->redirect("user");
         }
     }
