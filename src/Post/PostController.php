@@ -118,6 +118,9 @@ class PostController implements InjectionAwareInterface
             $post = $createForm->populateModel();
             $post->user = $loggedInUser;
             $createForm->validate();
+            if (!ctype_alnum($createForm->getExtra('tag_string'))) {
+                $createForm->addError('tag_string', "Tag can only contain alphanumeric characters.");
+            }
             if ($createForm->isValid()) {
                 $this->posts->save($post);
                 $this->di->tagController->saveTags($post, $createForm->getExtra('tag_string'));
@@ -162,6 +165,9 @@ class PostController implements InjectionAwareInterface
         if ($this->di->request->getMethod() == 'POST') {
             $post = $editForm->populateModel(null, ['id']);
             $editForm->validate();
+            if (!ctype_alnum($post->tag_string)) {
+                $editForm->addError('tag_string', "Tag can only contain alphanumeric characters.");
+            }
             if ($editForm->isValid()) {
                 $this->di->tagController->saveTags($post);
                 //Prevent edited column from being set to NULL TEMP flyttat från innan validate()
@@ -173,6 +179,7 @@ class PostController implements InjectionAwareInterface
                 unset($post->userVote);
                 unset($post->tags);
                 unset($post->tag_string);
+                unset($post->user_rank);
                 $this->posts->save($post);
                 $this->di->response->redirect("post/$postid");
             }
@@ -216,6 +223,7 @@ class PostController implements InjectionAwareInterface
                 unset($currentPost->downvote);
                 unset($currentPost->userVote);
                 unset($currentPost->tags);
+                unset($post->user_rank);
                 $this->posts->deleteSoft($currentPost);
                 $this->di->response->redirect("post");
             } else {

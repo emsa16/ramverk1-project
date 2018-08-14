@@ -28,6 +28,10 @@ class User extends BaseModel
                     'message' => 'Username must be entered.'
                 ],
                 [
+                    'rule' => 'alphanumeric',
+                    'message' => 'Username can only include alphanumeric characters.'
+                ],
+                [
                     'rule' => 'forbidden-characters',
                     'value' => '&<>\"\'',
                     'message' => 'Forbidden characters used. The following characters are not allowed: & < > \' "'

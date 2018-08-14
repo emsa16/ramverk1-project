@@ -109,6 +109,9 @@ trait ValidationTrait
             case 'forbidden-characters':
                 $passed = (preg_match('/['.$rule['value'].']/', $this->$attr) == 0);
                 break;
+            case 'alphanumeric':
+                $passed = ctype_alnum($this->$attr);
+                break;
             case 'match':
                 $passed = ($this->{$rule['value']} === $this->$attr);
                 break;
