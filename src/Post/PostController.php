@@ -321,9 +321,9 @@ class PostController implements InjectionAwareInterface
 
 
 
-    public function getAllPosts($loggedInUser)
+    public function getAllPosts($loggedInUser, $options = [])
     {
-        $posts = $this->posts->getAll();
+        $posts = $this->posts->getAll(null, [], $options);
         foreach ($posts as $key => $post) {
             $post = $this->getVoteStats($post, $loggedInUser);
             $post = $this->checkPosterPrivileges($post, $loggedInUser);

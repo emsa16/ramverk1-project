@@ -43,6 +43,11 @@ return [
             "file" => __DIR__ . "/route/admin.php",
         ],
         [
+            // These are for internal error handling and exceptions
+            "mount" => null,
+            "file" => __DIR__ . "/route/base.php",
+        ],
+        [
             // To read flat file content in Markdown from content/
             "mount" => null,
             "file" => __DIR__ . "/route/flat-file-content.php",

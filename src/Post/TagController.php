@@ -210,4 +210,11 @@ class TagController implements InjectionAwareInterface
             }
         }
     }
+
+
+
+    public function getAll()
+    {
+        return $this->tags->getAll();
+    }
 }
