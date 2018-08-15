@@ -167,7 +167,7 @@ install-tools-php:
 
 	curl -Lso $(BEHAT) https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar && chmod 755 $(BEHAT)
 
-	curl -Lso $(PHPUNIT) https://phar.phpunit.de/phpunit-5.7.9.phar && chmod 755 $(PHPUNIT)
+	curl -Lso $(PHPUNIT) https://phar.phpunit.de/phpunit-6.phar && chmod 755 $(PHPUNIT)
 
 	[ ! -f composer.json ] || composer install
 
