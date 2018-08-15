@@ -8,6 +8,8 @@ use \LRC\Form\ModelForm as Modelform;
 
 /**
  * A controller for the comment system.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class CommentController implements InjectionAwareInterface
 {

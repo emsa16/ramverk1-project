@@ -15,7 +15,7 @@ $visibility = $this->di->session->has("username") ? 'login' : 'logout';
             <?php if (isset($item["visibility"]) && $visibility !== $item["visibility"]) {
                 continue;
             // phpcs:disable
-            }
+}
             ?>
             <!-- phpcs:enable -->
             <li

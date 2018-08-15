@@ -4,6 +4,9 @@
 <?php
 $profileUrl = $this->url("profile");
 foreach ($users as $user) {
+    if ($user->deleted) {
+        continue;
+    }
     $gravatarString = md5(strtolower(trim($user->email)));
     ?>
     <table>

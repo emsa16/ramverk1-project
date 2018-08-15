@@ -84,7 +84,6 @@
     ?>
         <table>
             <tr>
-                <td><?= $comment->stars ?> &#9734;: </td>
                 <td><a href='<?= $url ?>'><?= $content ?></a></td>
                 <td> in the post: </td>
                 <td><a href='<?= $post_url ?>'><?= $post_title ?></a></td>

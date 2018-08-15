@@ -8,6 +8,8 @@ use \LRC\Form\ModelForm as Modelform;
 
 /**
  * A controller for the post system.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class PostController implements InjectionAwareInterface
 {

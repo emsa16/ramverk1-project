@@ -32,7 +32,7 @@
         <div class='stats'>
             <?= $points ?> points | by <?= $username ?> | added <?= $created . $edited ?>
             <?php if ($comment->stars) : ?>
-                <span class="rewarded"><?= $comment->stars ?> &#9734;</span>
+                <span class="rewarded">&#9734;</span>
             <?php endif; ?>
         </div>
 
