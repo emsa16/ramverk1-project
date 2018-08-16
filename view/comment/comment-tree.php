@@ -4,7 +4,7 @@
     $gravatarString = md5(strtolower(trim($email)));
     $points = ( (int)$comment->upvote - (int)$comment->downvote );
     $created = $comment->timeElapsedString($comment->created);
-    $edited = $comment->edited ? ", edited " . $comment->timeElapsedString($comment->edited) : "";
+    $edited = $comment->edited ? " · edited " . $comment->timeElapsedString($comment->edited) : "";
     $content = $textfilter->parse($comment->content, ["htmlentities", "markdown"])->text;
     $cid = $comment->id;
     ?>
@@ -13,7 +13,14 @@
 
         <a name='<?= $cid ?>'></a>
 
+    <table>
+    <tr>
+    <td>
+
         <?= $this->renderView("comment/vote-buttons", ["comment" => $comment]) ?>
+
+    </td>
+    <td>
 
         <?php
         $gravatarImg = "<img src='http://www.gravatar.com/avatar/$gravatarString.jpg?d=identicon&s=40'>";
@@ -29,10 +36,13 @@
         echo $gravatarImg;
         ?>
 
+    </td>
+    <td>
+
         <div class='stats'>
-            <?= $points ?> points | by <?= $username ?> | added <?= $created . $edited ?>
+            <?= $username ?> · <?= $points ?> points · <?= $created . $edited ?>
             <?php if ($comment->stars) : ?>
-                <span class="rewarded">&#9734;</span>
+                <span class="rewarded">&#9733;</span>
             <?php endif; ?>
         </div>
 
@@ -50,18 +60,22 @@
             <div class='text'><?= $content ?></div>
         <?php endif; ?>
 
+    </td>
+    </tr>
+    </table>
+
         <div class='actions'>
             <?php if ($isLoggedIn) : ?>
                 <a href='<?= $this->url("post/$postid/reply?id=$cid#$cid") ?>'>reply</a>
                 <?php if (!$comment->deleted && ($comment->isUserOwner || $comment->isUserAdmin)) : ?>
-                    | <a href='<?= $this->url("post/$postid/edit-comment?id=$cid#$cid") ?>'>edit</a>
-                    | <a href='<?= $this->url("post/$postid/delete-comment?id=$cid#$cid") ?>'>delete</a>
+                     · <a href='<?= $this->url("post/$postid/edit-comment?id=$cid#$cid") ?>'>edit</a>
+                     · <a href='<?= $this->url("post/$postid/delete-comment?id=$cid#$cid") ?>'>delete</a>
                 <?php endif; ?>
 
                 <?php if ($comment->isUserPostOwner) : ?>
                     <?php $actionUrl = $this->url("post/{$postid}/reward?id=$cid"); ?>
-                    <form class='reward' method="post" action="<?= $actionUrl ?>">
-                        <input type="submit" name="reward" value="Reward">
+                     · <form class='reward' method="post" action="<?= $actionUrl ?>">
+                        <input type="submit" name="reward" value="reward">
                     </form>
                 <?php endif; ?>
             <?php endif; ?>

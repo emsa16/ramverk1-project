@@ -16,7 +16,7 @@ class FrontpageController implements InjectionAwareInterface
 
     public function showPage()
     {
-        $title = "Let's talk Seinfeld";
+        $title = "Welcome";
 
         $loggedInUser = $this->di->userController->getLoggedInUserId();
         $options = [

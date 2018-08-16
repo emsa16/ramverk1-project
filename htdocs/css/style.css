@@ -1,14 +1,32 @@
+@font-face {
+    font-family: 'GloucesterMTExtraCondensed';
+    src: local('Gloucester MT Extra Condensed'), url('GLECB.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: Cambria, Georgia, Times, 'Times New Roman', serif;
+  font-family: GloucesterMTExtraCondensed, Cambria, Georgia, Times, 'Times New Roman', serif;
   margin-top: 48px;
+  letter-spacing: 5px;
+}
+
+h1, h2 {
+  font-style: italic;
 }
 
 body {
     margin: 0;
+    background-color: #1d4ba0;
+    color: white;
+}
+
+a {
+    color: #e30922;
 }
 
 .main-wrap,
@@ -18,11 +36,21 @@ body {
 }
 
 .header-wrap {
-    background-color: lightgrey;
+    background-color: #3d6bc0;
+    padding-bottom: 10px;
 }
 
 .site-title {
-  font-size: 2.8em;
+    font-family: GloucesterMTExtraCondensed, Cambria, Georgia, Times, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 2.8em;
+    margin-bottom: 10px;
+    letter-spacing: 5px;
+}
+
+.site-title img {
+    position: relative;
+    top: 22px;
 }
 
 .site-slogan {
@@ -46,6 +74,7 @@ body {
 .current {
   font-weight: bold;
   text-decoration: underline;
+  text-decoration-color: #fcd720;
 }
 
 h1 {
@@ -94,11 +123,19 @@ pre {
 
 .entry,
 .post {
-    padding: 10px 0;
+    padding: 10px 5px;
 }
 
 .vote-buttons {
     float: left;
+}
+
+.vote-buttons input {
+    height: 22px;
+    width: 30px;
+    padding: 0;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .entry img {
@@ -108,8 +145,12 @@ pre {
 }
 
 .stats {
-    color: grey;
+    color: #fcd720;
     font-size: 0.9em;
+}
+
+.stats a {
+    color: #fcd720;
 }
 
 .actions {
@@ -118,7 +159,7 @@ pre {
 }
 
 .actions a {
-    color: grey;
+    color: #fcd720;
 }
 
 .text {
@@ -140,6 +181,7 @@ pre {
 
 .delButton {
     background-color: red;
+    color: white;
 }
 
 label.has-error {
@@ -164,5 +206,82 @@ form.reward {
 }
 
 .rewarded {
-    background-color: gold;
+    color: gold;
+}
+
+.front-sections {
+    display: flex;
+}
+
+.front-sections div {
+    flex-grow: 1;
+}
+
+.front-sections .post .title p {
+    margin: 0;
+}
+
+.ranking {
+    color: #fcd720;
+}
+
+table.users table td:first-child {
+    padding-right: 10px;
+}
+
+.post,
+.entry {
+    background-color: #3d6bc0;
+    margin: 10px;
+}
+
+.reward input {
+    border: none;
+    background-color: initial;
+    color: gold;
+    font-family: "Helvetica Neue";
+    font-size: 1em;
+    text-decoration: underline;
+    padding-left: 0;
+    cursor: pointer;
+}
+
+.entry h2 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.entry h2 p {
+    margin: 0;
+}
+
+.tags a {
+    color: #fcd720;
+    background-color: #5d8be0;
+    padding: 3px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.post .title a {
+    font-size: 1.1em;
+}
+
+.profile-page {
+    text-align: center;
+}
+
+.profile-page table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-table {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-table h2 {
+    margin-top: 0;
 }

@@ -5,7 +5,7 @@
 ?>
 <h1>Remove account</h1>
 
-<h4>Are you sure you want to remove your account? NOTE: This will not remove your posts or comments.</h4>
+<p><b>Are you sure you want to remove your account? NOTE: This will not remove your posts or comments.</b></p>
 <dl class="dl-small">
     <dt>Username:</dt>
     <dd><?= htmlspecialchars($user->username) ?></dd>

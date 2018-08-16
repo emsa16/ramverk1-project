@@ -2,6 +2,8 @@
 $actionUrl = $this->url("post/create");
 ?>
 
+<h1>Create new post</h1>
+
 <form id="<?= $form->id ?>" class="form" method="post" action="<?= $actionUrl ?>">
 
     <div class="form-control">

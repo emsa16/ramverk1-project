@@ -1,4 +1,4 @@
-<h1>Account page</h1>
+<h1>My Account</h1>
 
 <p>Welcome <b><?= $name ?></b></p>
 

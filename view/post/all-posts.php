@@ -41,9 +41,9 @@
         <div class='post'>
             <?= $this->renderView("post/vote-buttons", ["post" => $post, "view" => 'overview']) ?>
 
-            <table class='title'>
+            <table>
                 <tr>
-                    <td><a href="<?= $this->url("post/{$post->id}") ?>">
+                    <td class='title'><a href="<?= $this->url("post/{$post->id}") ?>">
                         <?= !$post->deleted ? $title : "<p><i>deleted</i></p>" ?>
                     </a></td>
                     <td><span class='tags'><?= $tags ?></span></td>

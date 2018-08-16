@@ -9,7 +9,7 @@ if (isset($editForm)) {
 
 <div class="comments">
 
-<h4>Write a comment</h4>
+<p><b>Write a comment</b></p>
 <?php if ($isLoggedIn) {
     echo $this->renderView('comment/form', [
         "method" => "",
@@ -22,7 +22,7 @@ if (isset($editForm)) {
     <p><a href="<?= $this->url('login') ?>">Login</a> to leave a comment.</p>
 <?php } ?>
 
-<h3>Comments:</h3>
+<h2>Comments:</h2>
 <p><?= $commentCount ?> comments</p>
 <p>Sort by <a href="<?= $this->url("post/$postid?sort=best") ?>">best</a> |
               <a href="<?= $this->url("post/$postid?sort=old") ?>">oldest</a> |

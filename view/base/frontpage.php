@@ -1,8 +1,11 @@
-<h1>Let's talk Seinfeld</h1>
+<h1>Welcome</h1>
 
 <p>Welcome to our community, where we talk everything and anything about Seinfeld.</p>
 
-<a href="<?= $this->url("post") ?>"><h3>New posts</h3></a>
+<div class="front-sections">
+
+<div class="new-posts">
+<a href="<?= $this->url("post") ?>"><h2>New posts</h2></a>
 <?php foreach ($posts as $post) : ?>
     <?php
     if (!$post->isUserAdmin && $post->deleted && strtotime($post->deleted) < time()) {
@@ -29,9 +32,9 @@
     ?>
 
     <div class='post'>
-        <table class='title'>
+        <table>
             <tr>
-                <td><a href="<?= $this->url("post/{$post->id}") ?>">
+                <td class='title'><a href="<?= $this->url("post/{$post->id}") ?>">
                     <?= !$post->deleted ? $title : "<p><i>deleted</i></p>" ?>
                 </a></td>
                 <td><span class='tags'><?= $tags ?></span></td>
@@ -43,10 +46,12 @@
         </div>
     </div>
 <?php endforeach ?>
+</div>
 
 
 
-<a href="<?= $this->url("tags") ?>"><h3>Popular tags</h3></a>
+<div class="pop-tags">
+<a href="<?= $this->url("tags") ?>"><h2>Popular tags</h2></a>
 <?php
 $tagUrl = $this->url("tags");
 foreach ($pop_tags as $tag) {
@@ -57,25 +62,38 @@ foreach ($pop_tags as $tag) {
     <?php
 }
 ?>
+</div>
 
 
 
-<a href="<?= $this->url("profiles") ?>"><h3>Active users</h3></a>
+<div class="active-profiles">
+<a href="<?= $this->url("profiles") ?>"><h2>Active users</h2></a>
 <?php
 $profileUrl = $this->url("profile");
 foreach ($users as $user) {
     $gravatarString = md5(strtolower(trim($user->email)));
     ?>
-    <table>
+    <table class="users">
         <tr>
             <td>
                 <a href="<?= $profileUrl . "/" .  $user->username ?>">
-                    <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
-                    <span><?= $user->username ?></span>
+                    <table>
+                        <tr>
+                            <td>
+                                <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
+                            </td>
+                            <td>
+                                <?= $user->username ?>
+                            </td>
+                        </tr>
+                    </table>
                 </a>
             </td>
             <td class="ranking">(rank: <?= $user->rank ?>)</td>
         </tr>
     </table>
     <?php
-}
+} ?>
+</div>
+
+</div>

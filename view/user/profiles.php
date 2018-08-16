@@ -1,3 +1,5 @@
+<h1>Users</h1>
+
 <p>Sort by <a href="<?= $this->url("profiles?sort=name") ?>">name</a> |
            <a href="<?= $this->url("profiles?sort=rank") ?>">rank</a></p>
 
@@ -9,12 +11,20 @@ foreach ($users as $user) {
     }
     $gravatarString = md5(strtolower(trim($user->email)));
     ?>
-    <table>
+    <table class="users">
         <tr>
             <td>
                 <a href="<?= $profileUrl . "/" .  $user->username ?>">
-                    <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
-                    <span><?= $user->username ?></span>
+                    <table>
+                        <tr>
+                            <td>
+                                <img src='http://www.gravatar.com/avatar/<?= $gravatarString ?>.jpg?d=identicon&s=40'>
+                            </td>
+                            <td>
+                                <?= $user->username ?>
+                            </td>
+                        </tr>
+                    </table>
                 </a>
             </td>
             <td class="ranking">(rank: <?= $user->rank ?>)</td>

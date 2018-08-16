@@ -8,7 +8,7 @@ $urlToViewItems = $this->url("admin");
 
 ?><h1><?= $header ?></h1>
 
-<h4>Are you sure you want to delete this user? This will not remove the user's posts or comments.</h4>
+<p><b>Are you sure you want to delete this user? This will not remove the user's posts or comments.</b></p>
 <dl class="dl-small">
     <dt>ID:</dt>
     <dd><?= $user->id ?></dd>
